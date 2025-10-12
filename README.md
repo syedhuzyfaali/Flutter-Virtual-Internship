@@ -24,24 +24,24 @@ The **frontend app** focuses on responsive design, clear navigation, and smooth 
 ## Target Users
 
 ### Learners
-- High school and university students who want to manage tasks, collaborate with peers, and track their study progress
+High school and university students who want to manage tasks, collaborate with peers, and track their study progress
 
 ---
 
-## ⚙️ Core Features (MVP)
+## Core Features (MVP)
 
 User Authentication (Email/Google Sign-In)
-1. - Personal Dashboard displaying tasks, streaks, and daily goals
-2. - Task Management – Create, edit, and track study or project tasks
-3. - Group Workspaces for collaboration and shared task boards
-4. - Reminders and notifications for upcoming deadlines
-5. - Progress Analytics showing completion charts and streaks (for future updates)
-6. - Clean, responsive UI built with Flutter components
+1.  Personal Dashboard displaying tasks, streaks, and daily goals
+2.  Task Management – Create, edit, and track study or project tasks
+3.  Group Workspaces for collaboration and shared task boards
+4.  Reminders and notifications for upcoming deadlines
+5.  Progress Analytics showing completion charts and streaks (for future updates)
+6.  Clean, responsive UI built with Flutter components
 
 
 ---
 
-## 🧭 App Navigation Flow
+## App Navigation Flow
 
 | Screen | Description | Navigation |
 |:-------|:-------------|:------------|
@@ -53,7 +53,7 @@ User Authentication (Email/Google Sign-In)
 
 ---
 
-## 🧱 Project Structure
+## Project Structure
 
 
 ```
@@ -78,7 +78,7 @@ lib/
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** Flutter (Dart)
 - **UI:** Material Design Widgets
@@ -87,11 +87,11 @@ lib/
 
 ---
 
-## 🧩 Setup Instructions
+## Setup Instructions
 
 1. **Clone this repository**
    bash
-   git clone https://github.com/yourusername/studysphere-frontend.git
+   git clone https://github.com/syedhuzyfaali/Flutter-Virtual-Internship.git
    cd studysphere-frontend
 
 
@@ -112,7 +112,7 @@ lib/
 
 
 
-## 📌 Roadmap (Next Steps)
+##  Roadmap (Next Steps)
 * [ ] Build the app UI
 * [ ] Integrate backend API for authentication and program data.
 * [ ] Add persistent state management.
