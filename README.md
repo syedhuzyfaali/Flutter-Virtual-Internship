@@ -1,6 +1,6 @@
 # 📘 StudySync - Flutter Frontend
 
-**StudySphere** is a modern, mobile-friendly Flutter application designed to enhance student learning and academic organization. It allows learners to access courses, manage their study programs, and track progress — all within a clean, intuitive UI.  
+**StudySync** is a modern, mobile-friendly Flutter application designed to enhance student learning and academic organization. It allows learners to access courses, manage their study programs, and track progress — all within a clean, intuitive UI.  
 This repository contains the **frontend Flutter application** for the StudySphere project.
 
 ---
