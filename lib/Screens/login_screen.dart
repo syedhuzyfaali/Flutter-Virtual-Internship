@@ -1,8 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'dart:convert'; // Required for jsonDecode
-import 'package:http/http.dart' as http; // Required for API calls
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,135 +12,155 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final String _mockApiBaseUrl = 'https://68f34f12fd14a9fcc428651a.mockapi.io/user'; 
+  bool _isLoading = false;
 
-  void _login() async { 
-    if (_formKey.currentState!.validate()) {
-      final email = _emailController.text;
-      final password = _passwordController.text;
+  // 🔹 Temporary local mock user list (no API)
+  final List<Map<String, String>> _mockUsers = [
+    {
+      'email': 'student@example.com',
+      'password': '12345',
+      'fname': 'John',
+    },
+    {
+      'email': 'admin@example.com',
+      'password': 'admin123',
+      'fname': 'Admin',
+    },
+  ];
 
-      try {
-        final url = Uri.parse('$_mockApiBaseUrl?email=$email');
-        final response = await http.get(url);
+  void _login() async {
+    if (!_formKey.currentState!.validate()) return;
 
-        if (response.statusCode == 200) {
-          final List<dynamic> users = jsonDecode(response.body);
+    setState(() => _isLoading = true);
+    await Future.delayed(const Duration(seconds: 1)); // Simulate network delay
 
-          if (users.isNotEmpty) {
-            final Map<String, dynamic> user = users.first; 
-            
-            final storedPassword = user['password'] as String?; 
-            final storedName = user['fname'] as String?; 
-            
-            if (storedPassword != null && storedPassword == password) {
-              
-              final userName = (storedName?.isNotEmpty == true) ? storedName! : 'Student';
-              
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Login Successful! Welcome back, $userName.')),
-              );
-              
-              
-              Navigator.pushNamedAndRemoveUntil(
-                context, 
-                '/app_shell', 
-                (route) => false,
-                arguments: { 
-                  'isLoggedIn': true,
-                  'userName': userName,
-                },
-              );
-              
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Invalid Credentials. Please try again.')),
-              );
-            }
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('User not found. Please sign up.')),
-            );
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login Failed. Server error: ${response.statusCode}')),
-          );
-        }
-      } catch (e, st) {
-        print('LOGIN ERROR: $e');
-        print('STACK TRACE: $st');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An unexpected error occurred during login. Check console for details.')),
-        );
-      }
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    final user = _mockUsers.firstWhere(
+      (u) => u['email'] == email,
+      orElse: () => {},
+    );
+
+    if (user.isNotEmpty && user['password'] == password) {
+      final userName = user['fname'] ?? 'Student';
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Welcome back, $userName!')),
+      );
+
+      // 🔹 Navigate to your main app shell
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/app_shell',
+        (route) => false,
+        arguments: {'isLoggedIn': true, 'userName': userName},
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid credentials, please try again.')),
+      );
     }
+
+    setState(() => _isLoading = false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('StudySync Login')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(height: 50),
-              // Logo/Title placeholder
-              const Center(
-                child: Text('StudySync', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blue)),
-              ),
-              const SizedBox(height: 50),
-
-              // Email Field
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email)),
-                validator: (value) {
-                  if (value == null || !value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // Password Field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password', prefixIcon: Icon(Icons.lock)),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 32),
-
-              // Login Button
-              ElevatedButton(
-                onPressed: _login, 
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.blue,
+      backgroundColor: Colors.grey[50],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 🔹 Logo / App name
+                const Icon(Icons.school, size: 80, color: Colors.indigo),
+                const SizedBox(height: 12),
+                const Text(
+                  "Welcome Back",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
-                child: const Text('LOGIN', style: TextStyle(fontSize: 18, color: Colors.white)),
-              ),
-              
-              const SizedBox(height: 24),
-              // Link to Sign Up
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/signup');
-                },
-                child: const Text("Don't have an account? Sign Up"),
-              ),
-            ],
+                const SizedBox(height: 30),
+
+                // 🔹 Email field
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: const Icon(Icons.email_outlined),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter your email';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Invalid email address';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                // 🔹 Password field
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  obscureText: true,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Enter your password' : null,
+                ),
+                const SizedBox(height: 25),
+
+                // 🔹 Login button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigo,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Login',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                // 🔹 Footer
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Don't have an account? Sign up",
+                    style: TextStyle(color: Colors.indigo),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
