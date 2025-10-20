@@ -121,6 +121,15 @@ lib/
 
 ---
 
+We have created the prototype, here are the screenshots
+
+<img width="340" height="681" alt="login page" src="https://github.com/user-attachments/assets/8c1c4ea6-aa7d-4b98-85f0-ea0449c5c125" />
+<img width="339" height="684" alt="dashboard" src="https://github.com/user-attachments/assets/ab34c964-d0f1-45eb-919e-44689ae3710f" />
+<img width="340" height="680" alt="sign-up page" src="https://github.com/user-attachments/assets/65aa8421-df51-43c9-8d92-751dcc961e92" />
+<img width="340" height="679" alt="program listing" src="https://github.com/user-attachments/assets/e3d2202e-aa29-485d-928c-39d3d6dbbedd" />
+<img width="343" height="680" alt="program details page" src="https://github.com/user-attachments/assets/df54cc26-cb10-42df-b592-a6cf86ad04da" />
+
+
 
 ⭐ **If you find this useful, don’t forget to star the repo!**
 
