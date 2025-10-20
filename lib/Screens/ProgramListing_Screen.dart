@@ -1,19 +1,42 @@
 import 'package:flutter/material.dart';
+import 'Program_details_Screen.dart'; 
 
 class ProgramListing_Page extends StatelessWidget {
-  
-  final List<String> courses = <String>['Python Beginner Course', 'Flutter + Dart Intermediate Course ', 'Java Advanced Course', 'Data Science with R', 'Web Development with JavaScript', 'Machine Learning Basics', 'Cybersecurity Fundamentals', 'Cloud Computing with AWS', 'Mobile App Development with React Native', 'Database Management with SQL'];
-  final List<String> courseInstructors = <String>['Patricia Lopez', 'Charles Gonzalez', 'Jennifer Wilson', 'Daniel Anderson', 'Elizabeth Thomas', 'Matthew Taylor', 'Susan Moore', 'Anthony Jackson', 'Margaret White', 'Mark Harris'];
-  
+  final List<String> courses = <String>[
+    'Python Beginner Course',
+    'Flutter + Dart Intermediate Course',
+    'Java Advanced Course',
+    'Data Science with R',
+    'Web Development with JavaScript',
+    'Machine Learning Basics',
+    'Cybersecurity Fundamentals',
+    'Cloud Computing with AWS',
+    'Mobile App Development with React Native',
+    'Database Management with SQL'
+  ];
+
+  final List<String> courseInstructors = <String>[
+    'Patricia Lopez',
+    'Charles Gonzalez',
+    'Jennifer Wilson',
+    'Daniel Anderson',
+    'Elizabeth Thomas',
+    'Matthew Taylor',
+    'Susan Moore',
+    'Anthony Jackson',
+    'Margaret White',
+    'Mark Harris'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F8FA),
+      backgroundColor: const Color(0xFFF6F8FA),
       appBar: AppBar(
         elevation: 4,
         centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF4C94DC),
+        automaticallyImplyLeading: true, // ✅ make the back arrow work
+        backgroundColor: const Color(0xFF4C94DC),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(12),
@@ -26,430 +49,67 @@ class ProgramListing_Page extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontStyle: FontStyle.normal,
             fontSize: 16,
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: Colors.white,
           ),
-        ),
-        leading: const Icon(
-          Icons.arrow_back,
-          color: Color.fromARGB(255, 255, 255, 255),
-          size: 24,
         ),
       ),
       body: ListView.separated(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        physics:ClampingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        physics: const ClampingScrollPhysics(),
         itemCount: courses.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            tileColor: Color(0xffffffff),
+            tileColor: Colors.white,
             title: Text(
               courses[index],
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
                 fontSize: 14,
-                color: Color(0xff000000),
+                color: Colors.black,
               ),
-              textAlign: TextAlign.start,
             ),
             subtitle: Text(
               courseInstructors[index],
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                fontSize: 14,
+                fontSize: 13,
                 color: Color.fromARGB(255, 158, 158, 158),
               ),
-              textAlign: TextAlign.start,
             ),
             dense: false,
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-            selected: false,
-            selectedTileColor: Color(0x42000000),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              side: BorderSide(color: Colors.grey.shade300, width: 1),
             ),
-            trailing: Icon(
+            trailing: const Icon(
               Icons.arrow_forward_ios,
               color: Color(0xFF8B8B8B),
-              size: 24,
+              size: 18,
             ),
+
+            // ✅ When user taps a course, navigate to details screen
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProgramDetails_Screen(
+                    title: courses[index],
+                    instructor: courseInstructors[index],
+                    description:
+                        'This is a detailed description of ${courses[index]}. Here you can include what students will learn, prerequisites, and duration.',
+                    imageUrl:
+                        'https://via.placeholder.com/400x200?text=${Uri.encodeComponent(courses[index])}',
+                  ),
+                ),
+              );
+            },
           );
         },
         separatorBuilder: (BuildContext context, int index) =>
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
       ),
-      // body: ListView(
-      //   scrollDirection: Axis.vertical,
-      //   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      //   shrinkWrap: false,
-      //   physics: ClampingScrollPhysics(),
-      //   separatorBuilder: (BuildContext context, int index) =>
-      //       SizedBox(height: 8),
-      //   children: [
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //     ListTile(
-      //       tileColor: Color(0xffffffff),
-      //       title: Text(
-      //         "Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       subtitle: Text(
-      //         "Sub Title",
-      //         style: TextStyle(
-      //           fontWeight: FontWeight.w400,
-      //           fontStyle: FontStyle.normal,
-      //           fontSize: 14,
-      //           color: Color(0xff000000),
-      //         ),
-      //         textAlign: TextAlign.start,
-      //       ),
-      //       dense: false,
-      //       contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-      //       selected: false,
-      //       selectedTileColor: Color(0x42000000),
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(Radius.circular(8)),
-      //         side: BorderSide(color: Color(0x4d9e9e9e), width: 1),
-      //       ),
-      //       trailing: Icon(
-      //         Icons.arrow_forward_ios,
-      //         color: Color(0xFF8B8B8B),
-      //         size: 24,
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
