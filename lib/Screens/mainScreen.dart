@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import './drawer_menu.dart';
+import './ProgramListing_Screen.dart';
+
 
 // Replace the simple blue with a learning-focused gradient + accents
 const primaryColor1 = Color(0xFF6C63FF); // violet
@@ -420,15 +422,23 @@ class _MainscreenState extends State<Mainscreen> {
               )),
           const SizedBox(height: 12),
 
-          // NEW: View All Courses button under dashboard courses
-          ElevatedButton.icon(
-            onPressed: () => _viewAllCourses(),
-            icon: const Icon(Icons.view_list),
-            label: const Text('View All Courses'),
-            style: ElevatedButton.styleFrom(backgroundColor: primaryColor1),
-          ),
+        // NEW: View All Courses button under dashboard courses
+ElevatedButton.icon(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProgramListing_Page(),
+      ),
+    );
+  },
+  icon: const Icon(Icons.view_list),
+  label: const Text('View All Courses'),
+  style: ElevatedButton.styleFrom(backgroundColor: primaryColor1),
+),
 
-          const SizedBox(height: 50),
+const SizedBox(height: 50),
+
         ],
       ),
     );
