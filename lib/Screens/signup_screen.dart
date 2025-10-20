@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'mainScreen.dart'; // Import the mainScreen to access its state method
-import 'dart:convert'; // Required for jsonEncode
-import 'package:http/http.dart' as http; // Required for API calls
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,15 +9,56 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(); 
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  String? _selectedProfession; 
-  final List<String> _professions = ['Learner (Student)', 'Educator (Teacher/Tutor)']; 
+  String? _selectedProfession;
 
-  final String _mockApiUrl = 'https://68f34f12fd14a9fcc428651a.mockapi.io/user';
-  
+  // 🔹 Simulated local users list (same structure as login)
+  static final List<Map<String, String>> _localUsers = [];
+
+  final List<String> _professions = [
+    'Learner (Student)',
+    'Educator (Teacher/Tutor)'
+  ];
+
+  bool _isLoading = false;
+
+  void _signUp() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    await Future.delayed(const Duration(seconds: 1)); // Simulate processing delay
+
+    final email = _emailController.text.trim();
+    final existingUser = _localUsers.any((u) => u['email'] == email);
+
+    if (existingUser) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User already exists! Please log in.')),
+      );
+      setState(() => _isLoading = false);
+      return;
+    }
+
+    _localUsers.add({
+      'fname': _nameController.text.trim(),
+      'email': email,
+      'password': _passwordController.text.trim(),
+      'profession': _selectedProfession ?? 'Learner (Student)',
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Account created successfully! Please log in.')),
+    );
+
+    // 🔹 Navigate to Login page
+    Navigator.pushReplacementNamed(context, '/');
+
+    setState(() => _isLoading = false);
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -30,150 +68,163 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _signUp() async { // <--- Made asynchronous
-    if (_formKey.currentState!.validate()) {
-      try {
-        final response = await http.post(
-          Uri.parse(_mockApiUrl),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            // Fields match your schema: fname, email, password, Proffesion
-            'fname': _nameController.text, 
-            'email': _emailController.text,
-            'password': _passwordController.text,
-            'Proffesion': _selectedProfession!, 
-          }),
-        );
-
-        if (response.statusCode == 201) { // 201 Created means successful resource creation
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Sign Up Successful! Please log in.')),
-          );
-          
-          // Navigate to Login Screen
-          Navigator.pushReplacementNamed(context, '/login'); 
-
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Sign Up Failed. Server response: ${response.statusCode}')),
-          );
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Network error during sign up: $e')),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create StudySync Account')),
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: const Text('Create Your Account'),
+        backgroundColor: Colors.indigo,
+        centerTitle: true,
+        elevation: 2,
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // 1. Name Field
+            children: [
+              const SizedBox(height: 10),
+              const Icon(Icons.person_add, size: 80, color: Colors.indigo),
+              const SizedBox(height: 15),
+              const Text(
+                "Join StudySync",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              // Full Name
               TextFormField(
-                controller: _nameController, 
-                decoration: const InputDecoration(labelText: 'Full Name', prefixIcon: Icon(Icons.person)),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Full Name',
+                  prefixIcon: const Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Enter your name' : null,
               ),
               const SizedBox(height: 16),
-              
-              // 2. Email Field
+
+              // Email
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email)),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || !value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              
-              // 3. Password Field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password', prefixIcon: Icon(Icons.lock)),
-                validator: (value) {
-                  if (value == null || value.length < 6) {
-                    return 'Password must be at least 6 characters';
+                    return 'Enter a valid email address';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
 
-              // 4. Confirm Password Field
+              // Password
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                validator: (value) =>
+                    value != null && value.length < 6
+                        ? 'Password must be at least 6 characters'
+                        : null,
+              ),
+              const SizedBox(height: 16),
+
+              // Confirm Password
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'Confirm Password', prefixIcon: Icon(Icons.lock_reset)),
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon: const Icon(Icons.lock_reset),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please confirm your password';
-                  }
                   if (value != _passwordController.text) {
                     return 'Passwords do not match';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 24),
-              
-              // 5. Profession Dropdown
+              const SizedBox(height: 20),
+
+              // Profession Dropdown
               DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'I am a...',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.work),
-                ),
-                initialValue: _selectedProfession,
-                hint: const Text('Select your Profession'),
-                items: _professions.map((String profession) {
+                value: _selectedProfession,
+                items: _professions.map((profession) {
                   return DropdownMenuItem<String>(
                     value: profession,
                     child: Text(profession),
                   );
                 }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedProfession = newValue;
-                  });
+                onChanged: (value) {
+                  setState(() => _selectedProfession = value);
                 },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select your profession';
-                  }
-                  return null;
-                },
+                decoration: InputDecoration(
+                  labelText: 'I am a...',
+                  prefixIcon: const Icon(Icons.work_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                validator: (value) =>
+                    value == null ? 'Select your profession' : null,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 28),
 
               // Sign Up Button
-              ElevatedButton(
-                onPressed: _signUp,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.blue,
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _signUp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Sign Up',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                 ),
-                child: const Text('SIGN UP', style: TextStyle(fontSize: 18, color: Colors.white)),
+              ),
+              const SizedBox(height: 20),
+
+              // Already have account
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/');
+                },
+                child: const Text(
+                  'Already have an account? Login',
+                  style: TextStyle(color: Colors.indigo),
+                ),
               ),
             ],
           ),
