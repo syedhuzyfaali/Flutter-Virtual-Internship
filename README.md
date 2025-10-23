@@ -156,10 +156,6 @@ lib/
 
 ---
 
-> 🗓️ **Release Date:** October 2025  
-> 👨‍💻 **Developer:** Ian – Full Stack Developer  
-> 🚀 **Framework:** Flutter  
-
 ⭐ **If you find this useful, don’t forget to star the repo!**
 
 
