@@ -112,24 +112,53 @@ lib/
 
 
 
-##  Roadmap (Next Steps)
-* [ ] Build the app UI
-* [ ] Integrate backend API for authentication and program data.
-* [ ] Add persistent state management.
-* [ ] Implement search and filter functionality.
-* [ ] Add user settings and dark mode.
+# 📘 CHANGELOG
+
+## Version 1.0.0 – Course Module Implementation
+
+### 🧩 Program Listing Page
+- **Added dynamic API integration** using the `http` package to fetch paginated course data from a remote endpoint.  
+- **Implemented JSON parsing** and data mapping into a custom `Course` model to manage structured content within the app.  
+- **Introduced state management** using `setState()` to handle transitions between loading, success, and error states.  
+- **Integrated loading indicator** using `SpinKitCubeGrid` from the `flutter_spinkit` package to enhance user feedback during data retrieval.  
+- **Added error handling** with `try-catch` blocks and `SnackBar` notifications to manage network issues and API failures gracefully.  
+- **Designed responsive UI components** for listing courses, including course title, summary, lecturer, and enrollment deadlines.  
+- **Implemented pagination controls** (Next/Previous) to navigate through API pages dynamically.  
+- **Enabled navigation** to detailed course pages (`ProgramDetails_Screen`) upon item selection for a smooth user flow.  
 
 ---
 
-We have created the prototype, here are the screenshots
+### 🧠 Program Details Screen
+- **Connected detailed course view** to fetch individual course data dynamically using the course’s unique ID parameter.  
+- **Enhanced state management** by maintaining loading states and real-time UI updates upon successful data fetch or failure.  
+- **Reinforced error handling** with descriptive `SnackBar` alerts to provide user-friendly feedback during network or decoding errors.  
+- **Integrated loading spinner (`SpinKitCubeGrid`)** for seamless user experience while awaiting data response.  
+- **Implemented versatile image handling** that supports base64, remote URLs, and invalid image fallbacks, ensuring consistent visual presentation.  
+- **Refined layout design** to display key course details such as title, instructor, summary, and enrollment deadline in a clear, structured format.  
 
-<img width="340" height="681" alt="login page" src="https://github.com/user-attachments/assets/8c1c4ea6-aa7d-4b98-85f0-ea0449c5c125" />
-<img width="339" height="684" alt="dashboard" src="https://github.com/user-attachments/assets/ab34c964-d0f1-45eb-919e-44689ae3710f" />
-<img width="340" height="680" alt="sign-up page" src="https://github.com/user-attachments/assets/65aa8421-df51-43c9-8d92-751dcc961e92" />
-<img width="340" height="679" alt="program listing" src="https://github.com/user-attachments/assets/e3d2202e-aa29-485d-928c-39d3d6dbbedd" />
-<img width="343" height="680" alt="program details page" src="https://github.com/user-attachments/assets/df54cc26-cb10-42df-b592-a6cf86ad04da" />
+---
 
+### 📝 Course Registration Form
+- **Introduced modal registration form** using `AlertDialog` for a non-intrusive and accessible user experience.  
+- **Added form validation logic** leveraging `Form` and `TextFormField` validators to ensure accurate data entry for name, email, and phone fields.  
+- **Implemented form submission workflow** with simulated API call delay (`Future.delayed`) to mimic real-world data posting.  
+- **Integrated submission state feedback** with a `CircularProgressIndicator` to indicate ongoing form processing.  
+- **Added success feedback mechanism** via a `SnackBar` message confirming enrollment submission and user acknowledgment.  
+- **Ensured UI responsiveness and data consistency** through `GlobalKey<FormState>` management and proper form lifecycle control.  
 
+---
+
+### ⚙️ Overall Improvements
+- Optimized **API-driven architecture** for dynamic content delivery.  
+- Enhanced **user experience (UX)** with intuitive feedback loops and visual cues.  
+- Improved **app reliability** through structured error management and robust state handling.  
+- Ensured **UI consistency** across both listing and detail views with clean layout, modern color scheme, and responsive widgets.  
+
+---
+
+> 🗓️ **Release Date:** October 2025  
+> 👨‍💻 **Developer:** Ian – Full Stack Developer  
+> 🚀 **Framework:** Flutter  
 
 ⭐ **If you find this useful, don’t forget to star the repo!**
 
