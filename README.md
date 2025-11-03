@@ -110,8 +110,17 @@ lib/
 ---
 
 
+### Screenshots
+<img width="336" height="680" alt="listing 2" src="https://github.com/user-attachments/assets/2992d5ac-8ae6-4b98-9426-9ace63c2c413" />
+<img width="336" height="682" alt="listing 1" src="https://github.com/user-attachments/assets/222ae669-235b-46f9-9459-d8fed2e6b566" />
+<img width="339" height="684" alt="dashboard" src="https://github.com/user-attachments/assets/9fc0c480-2143-4d82-9b23-adccda995c5a" />
+<img width="340" height="680" alt="sign-up page" src="https://github.com/user-attachments/assets/c9f2b6dc-7b10-42be-b5bd-b7c3808b2b1b" />
+<img width="336" height="681" alt="reg 1" src="https://github.com/user-attachments/assets/1e004ca0-be4d-42a7-81bf-299ac06cf31c" />
+<img width="336" height="682" alt="new program listing" src="https://github.com/user-attachments/assets/f36af4aa-5841-4ebf-989e-9f9cd5badba6" />
+<img width="340" height="681" alt="login page" src="https://github.com/user-attachments/assets/52add74b-2765-4f3d-9f11-d8c4a141a441" />
 
 
+---
 # 📘 CHANGELOG
 
 ## Version 1.0.0 – Course Module Implementation
