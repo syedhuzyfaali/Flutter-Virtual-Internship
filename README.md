@@ -156,6 +156,20 @@ lib/
 
 ---
 
+### Challenges Faced
+
+-Integrating Firebase services and handling authentication securely
+-Managing asynchronous API requests and state across screens
+-Designing consistent UI components adaptable across devices
+-Resolving dependency conflicts during build and deployment
+
+### Learning Outcomes
+
+-Strengthened understanding of Flutter architecture and Firebase integration
+-Improved team collaboration and version control practices
+-Enhanced problem-solving and debugging skills in real-world scenarios
+-Learned best practices for UI/UX consistency and data handling
+
 ⭐ **If you find this useful, don’t forget to star the repo!**
 
 
